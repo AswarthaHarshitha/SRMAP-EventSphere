@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#004d9b;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#0080c5;stop-opacity:0.9" />
+    </linearGradient>
+    <linearGradient id="stageGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#a31f34;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#c41230;stop-opacity:0.8" />
+    </linearGradient>
+    <linearGradient id="bannerGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#a31f34;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#004d9b;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="400" fill="url(#bgGradient)"/>
+  
+  <!-- Light pattern overlay -->
+  <path d="M0,0 L800,400" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.1" />
+  <path d="M0,400 L800,0" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.1" />
+  <path d="M400,0 L400,400" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.1" />
+  <path d="M0,200 L800,200" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.1" />
+  
+  <!-- SRM AP Logo (simplified) in the background -->
+  <rect x="690" y="30" width="80" height="80" rx="10" ry="10" fill="#004d9b" fill-opacity="0.4"/>
+  <text x="730" y="85" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#ffffff" fill-opacity="0.5">SRM</text>
+  
+  <!-- Modern event hall layout -->
+  <rect x="100" y="120" width="600" height="240" rx="5" ry="5" fill="#ffffff" fill-opacity="0.95"/>
+  
+  <!-- Stage -->
+  <rect x="130" y="140" width="540" height="100" rx="3" ry="3" fill="url(#stageGradient)"/>
+  
+  <!-- Stage lighting -->
+  <circle cx="200" cy="140" r="10" fill="#ffffff" fill-opacity="0.7"/>
+  <circle cx="300" cy="140" r="10" fill="#ffffff" fill-opacity="0.7"/>
+  <circle cx="400" cy="140" r="10" fill="#ffffff" fill-opacity="0.7"/>
+  <circle cx="500" cy="140" r="10" fill="#ffffff" fill-opacity="0.7"/>
+  <circle cx="600" cy="140" r="10" fill="#ffffff" fill-opacity="0.7"/>
+  
+  <!-- Banner on stage -->
+  <rect x="200" y="155" width="400" height="60" fill="#f5f5f5"/>
+  <text x="400" y="190" font-family="Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="#004d9b">SRM UNIVERSITY AP</text>
+  <text x="400" y="210" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#a31f34">TECH FEST 2025</text>
+  
+  <!-- Speakers/presenters -->
+  <circle cx="160" cy="185" r="15" fill="#333333"/>
+  <rect x="155" cy="200" width="10" height="20" fill="#333333"/>
+  <circle cx="640" cy="185" r="15" fill="#333333"/>
+  <rect x="635" cy="200" width="10" height="20" fill="#333333"/>
+  
+  <!-- Audience seating - more modern arrangement -->
+  <rect x="150" y="260" width="500" height="80" rx="3" ry="3" fill="#f5f5f5"/>
+  
+  <!-- Modern seating layout -->
+  <rect x="160" y="270" width="60" height="25" rx="3" ry="3" fill="#e0e0e0"/>
+  <rect x="230" y="270" width="60" height="25" rx="3" ry="3" fill="#e0e0e0"/>
+  <rect x="300" y="270" width="60" height="25" rx="3" ry="3" fill="#e0e0e0"/>
+  <rect x="370" y="270" width="60" height="25" rx="3" ry="3" fill="#e0e0e0"/>
+  <rect x="440" y="270" width="60" height="25" rx="3" ry="3" fill="#e0e0e0"/>
+  <rect x="510" y="270" width="60" height="25" rx="3" ry="3" fill="#e0e0e0"/>
+  
+  <rect x="160" y="305" width="60" height="25" rx="3" ry="3" fill="#e0e0e0"/>
+  <rect x="230" y="305" width="60" height="25" rx="3" ry="3" fill="#e0e0e0"/>
+  <rect x="300" y="305" width="60" height="25" rx="3" ry="3" fill="#e0e0e0"/>
+  <rect x="370" y="305" width="60" height="25" rx="3" ry="3" fill="#e0e0e0"/>
+  <rect x="440" y="305" width="60" height="25" rx="3" ry="3" fill="#e0e0e0"/>
+  <rect x="510" y="305" width="60" height="25" rx="3" ry="3" fill="#e0e0e0"/>
+  
+  <!-- People in audience (simplified) -->
+  <circle cx="190" cy="282" r="5" fill="#333333"/>
+  <circle cx="260" cy="282" r="5" fill="#333333"/>
+  <circle cx="330" cy="282" r="5" fill="#333333"/>
+  <circle cx="400" cy="282" r="5" fill="#333333"/>
+  <circle cx="470" cy="282" r="5" fill="#333333"/>
+  <circle cx="540" cy="282" r="5" fill="#333333"/>
+  
+  <circle cx="190" cy="317" r="5" fill="#333333"/>
+  <circle cx="260" cy="317" r="5" fill="#333333"/>
+  <circle cx="330" cy="317" r="5" fill="#333333"/>
+  <circle cx="400" cy="317" r="5" fill="#333333"/>
+  <circle cx="470" cy="317" r="5" fill="#333333"/>
+  <circle cx="540" cy="317" r="5" fill="#333333"/>
+  
+  <!-- Event title banner -->
+  <rect x="50" y="50" width="700" height="50" rx="5" ry="5" fill="url(#bannerGradient)"/>
+  <text x="400" y="82" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#FFFFFF">SRM UNIVERSITY AP TECHNICAL & CULTURAL EVENTS</text>
+</svg>

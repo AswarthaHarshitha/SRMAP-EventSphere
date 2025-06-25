@@ -1,0 +1,12 @@
+{
+  "watch": ["server/**/*", "shared/**/*"],
+  "ext": "ts,js,json",
+  "ignore": ["node_modules", "dist", ".git"],
+  "exec": "tsx server/index.ts",
+  "verbose": true,
+  "delay": "500",
+  "restartable": "rs",
+  "events": {
+    "restart": "echo \"\\nServer restarting due to changes...\\n\""
+  }
+}

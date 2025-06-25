@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="100" viewBox="0 0 300 100">
+  <defs>
+    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#004d9b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0080c5;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="redGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#a31f34;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c41230;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- SRM Logo based on actual SRM AP logo -->
+  <!-- Shield/Crest Shape -->
+  <path d="M45,15 L75,15 C80,15 85,20 85,25 L85,65 C85,70 80,75 75,75 L45,75 C40,75 35,70 35,65 L35,25 C35,20 40,15 45,15 Z" fill="#004d9b"/>
+  
+  <!-- Flame/Torch Symbol -->
+  <path d="M50,25 Q60,20 70,25 Q65,40 60,55 Q55,40 50,25 Z" fill="#ffffff"/>
+  
+  <!-- Book Symbol -->
+  <rect x="50" y="55" width="20" height="10" fill="#ffffff"/>
+  <path d="M50,55 L50,65 L60,60 L70,65 L70,55 Z" fill="#a31f34"/>
+  
+  <!-- SRM Text - Red -->
+  <text x="95" y="43" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#a31f34">SRM</text>
+  
+  <!-- University Text - Blue -->
+  <text x="95" y="63" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#004d9b">UNIVERSITY</text>
+  
+  <!-- AP Text - Blue -->
+  <text x="215" y="63" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#a31f34">AP</text>
+  
+  <!-- Underline -->
+  <line x1="95" y1="70" x2="245" y2="70" stroke="#004d9b" stroke-width="2"/>
+  
+  <!-- Tagline -->
+  <text x="95" y="85" font-family="Arial, sans-serif" font-size="10" fill="#333333">Andhra Pradesh</text>
+</svg>

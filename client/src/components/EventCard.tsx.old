@@ -1,0 +1,109 @@
+import { Link } from "wouter";
+import { 
+  Card, 
+  CardContent 
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Calendar, MapPin } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+
+interface EventCardProps {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  startDate: string;
+  location: string;
+  price: number;
+  availableSpots: number;
+  featuredStatus?: string;
+}
+
+const EventCard = ({
+  id,
+  title,
+  description,
+  image,
+  startDate,
+  location,
+  price,
+  availableSpots,
+  featuredStatus
+}: EventCardProps) => {
+  const formattedDate = new Date(startDate).toLocaleDateString('en-US', { 
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+  
+  const formattedTime = new Date(startDate).toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit'
+  });
+  
+  const badgeText = featuredStatus || 
+    (new Date(startDate) > new Date() && 
+     formatDistanceToNow(new Date(startDate), { addSuffix: true }).includes('in') && 
+     !formatDistanceToNow(new Date(startDate), { addSuffix: true }).includes('about')
+    ) ? 'UPCOMING' : '';
+  
+  const badgeColor = 
+    featuredStatus === 'FEATURED' 
+      ? 'bg-primary-600' 
+      : featuredStatus === 'NEW' 
+        ? 'bg-secondary-600' 
+        : featuredStatus === 'TRENDING' 
+          ? 'bg-amber-500' 
+          : 'bg-green-600';
+
+  return (
+    <Card className="overflow-hidden flex flex-col h-full">
+      <div className="relative">
+        <img 
+          src={image || "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"} 
+          alt={title} 
+          className="w-full h-48 object-cover"
+        />
+        {badgeText && (
+          <div className={`absolute top-4 left-4 ${badgeColor} text-white text-xs font-bold px-2 py-1 rounded`}>
+            {badgeText}
+          </div>
+        )}
+        <div className="absolute bottom-4 right-4 bg-white bg-opacity-90 text-gray-900 text-xs font-bold px-2 py-1 rounded-full">
+          {availableSpots} spots left
+        </div>
+      </div>
+      
+      <CardContent className="p-6 flex-grow flex flex-col">
+        <div className="flex items-center text-sm text-gray-600 mb-2">
+          <Calendar className="mr-2 h-4 w-4 text-primary-500" />
+          <span>{formattedDate} • {formattedTime}</span>
+        </div>
+        
+        <h3 className="font-heading font-semibold text-xl mb-2 text-gray-900">{title}</h3>
+        
+        <div className="flex items-center text-sm text-gray-600 mb-4">
+          <MapPin className="mr-2 h-4 w-4 text-primary-500" />
+          <span>{location}</span>
+        </div>
+        
+        <p className="text-gray-600 text-sm mb-4 flex-grow">{description.length > 100 ? `${description.substring(0, 100)}...` : description}</p>
+        
+        <div className="flex items-center justify-between mt-auto">
+          <div>
+            <span className="font-bold text-gray-900">₹{price.toFixed(2)}</span>
+            <span className="text-sm text-gray-500 ml-1">per ticket</span>
+          </div>
+          
+          <Link href={`/events/${id}`}>
+            <Button>
+              Book Now
+            </Button>
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default EventCard;

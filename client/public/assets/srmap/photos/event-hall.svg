@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="floorGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5f5f5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e0e0e0;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="wallGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f0f0f0;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="ceilingGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#004d9b;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#004d9b;stop-opacity:0.05" />
+    </linearGradient>
+    <linearGradient id="srmBlue" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#004d9b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0080c5;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="srmRed" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#a31f34;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c41230;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="400" fill="#f9f9f9"/>
+  
+  <!-- Modern Interior - SRM University AP Event Hall -->
+  <!-- Floor -->
+  <polygon points="150,400 650,400 600,300 200,300" fill="url(#floorGradient)"/>
+  
+  <!-- Wall left -->
+  <polygon points="150,400 200,300 200,100 150,150" fill="url(#wallGradient)"/>
+  
+  <!-- Wall right -->
+  <polygon points="650,400 600,300 600,100 650,150" fill="url(#wallGradient)"/>
+  
+  <!-- Ceiling -->
+  <polygon points="200,100 600,100 600,300 200,300" fill="url(#ceilingGradient)"/>
+  
+  <!-- Back Wall -->
+  <rect x="200" y="100" width="400" height="200" fill="url(#wallGradient)"/>
+  
+  <!-- SRM AP Banner -->
+  <rect x="260" y="120" width="280" height="60" fill="url(#srmBlue)"/>
+  <text x="400" y="152" font-family="Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="#FFFFFF">SRM UNIVERSITY AP</text>
+  <text x="400" y="172" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#FFFFFF">VENUE FOR EXCELLENCE</text>
+  
+  <!-- Event Stage -->
+  <rect x="280" y="200" width="240" height="80" rx="5" ry="5" fill="url(#srmRed)" fill-opacity="0.8"/>
+  <text x="400" y="245" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#FFFFFF">SEMINAR HALL</text>
+  
+  <!-- Lights -->
+  <circle cx="250" cy="120" r="5" fill="#FFEB3B" stroke="#E0E0E0" stroke-width="1"/>
+  <circle cx="350" cy="120" r="5" fill="#FFEB3B" stroke="#E0E0E0" stroke-width="1"/>
+  <circle cx="450" cy="120" r="5" fill="#FFEB3B" stroke="#E0E0E0" stroke-width="1"/>
+  <circle cx="550" cy="120" r="5" fill="#FFEB3B" stroke="#E0E0E0" stroke-width="1"/>
+  
+  <!-- SRM AP Logo (Simplified) -->
+  <rect x="360" y="60" width="80" height="40" rx="5" ry="5" fill="#FFFFFF" stroke="#004d9b" stroke-width="2"/>
+  <text x="400" y="85" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#004d9b">SRM AP</text>
+  
+  <!-- People (simplified) -->
+  <circle cx="350" cy="350" r="10" fill="#333333"/>
+  <rect x="345" y="360" width="10" height="20" fill="#333333"/>
+  
+  <circle cx="400" cy="350" r="10" fill="#333333"/>
+  <rect x="395" y="360" width="10" height="20" fill="#333333"/>
+  
+  <circle cx="450" cy="350" r="10" fill="#333333"/>
+  <rect x="445" y="360" width="10" height="20" fill="#333333"/>
+  
+  <!-- Decorative elements -->
+  <rect x="220" y="150" width="40" height="80" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="1"/>
+  <rect x="540" y="150" width="40" height="80" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="1"/>
+  
+  <!-- Text Label -->
+  <text x="400" y="385" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#333333">SRM UNIVERSITY AP EVENT CENTER</text>
+</svg>
