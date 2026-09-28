@@ -1,5 +1,25 @@
+# Dependencies
 node_modules/
+
+# Build output
 dist/
+.vercel/
+*.tsbuildinfo
+
+# Environment and secrets
 .env
+.env.*
+!.env.example
+
+# Logs
 *.log
+npm-debug.log*
+
+# Test and coverage output
+coverage/
+
+# Editors and OS files
+.vscode/
+.idea/
 .DS_Store
+Thumbs.db

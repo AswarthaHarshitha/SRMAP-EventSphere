@@ -1,0 +1,14 @@
+# Local PostgreSQL for development: docker compose up -d db
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: eventsphere
+      POSTGRES_PASSWORD: eventsphere
+      POSTGRES_DB: eventsphere
+    ports:
+      - "127.0.0.1:5434:5432"
+    volumes:
+      - eventsphere-db:/var/lib/postgresql/data
+volumes:
+  eventsphere-db:

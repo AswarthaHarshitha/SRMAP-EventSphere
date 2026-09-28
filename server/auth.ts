@@ -1,113 +1,130 @@
-import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-import { storage } from './storage';
-import type { User } from '@shared/schema';
+import type { NextFunction, Request, Response } from "express";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { eq } from "drizzle-orm";
+import { users, type User } from "../shared/schema";
+import type { UserRole } from "../shared/constants";
+import type { PublicUser } from "../shared/api";
+import { config } from "./config";
+import { getDb } from "./db";
+import { forbidden, HttpError, unauthorized } from "./errors";
 
-// JWT secret key
-const JWT_SECRET = process.env.JWT_SECRET || 'eventpulse-secret-key';
-const JWT_EXPIRY = '7d';
+export const SESSION_COOKIE = "evs_session";
+const BCRYPT_ROUNDS = 12;
 
-// Generate a JWT token
-export function generateToken(user: User): string {
-  const payload = {
-    userId: user.id,
-    username: user.username,
-    email: user.email,
-    role: user.role,
-  };
-  
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRY });
-}
-
-// Verify a password against hashed password
-export async function verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
-  return bcrypt.compare(password, hashedPassword);
-}
-
-// Hash a password
-export async function hashPassword(password: string): Promise<string> {
-  const salt = await bcrypt.genSalt(10);
-  return bcrypt.hash(password, salt);
-}
-
-// Authentication middleware
-export function authenticateJWT(req: Request, res: Response, next: NextFunction) {
-  const authHeader = req.headers.authorization;
-  
-  if (!authHeader) {
-    return res.status(401).json({ message: 'Authentication token is missing' });
-  }
-  
-  const token = authHeader.split(' ')[1];
-  
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: number };
-    req.userId = decoded.userId;
-    next();
-  } catch (error) {
-    return res.status(403).json({ message: 'Invalid or expired token' });
-  }
-}
-
-// Role-based access control middleware
-export function authorizeRoles(...roles: string[]) {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const userId = req.userId;
-      
-      if (!userId) {
-        return res.status(401).json({ message: 'Unauthorized' });
-      }
-      
-      const user = await storage.getUser(userId);
-      
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-      
-      if (!roles.includes(user.role)) {
-        return res.status(403).json({ message: 'Access forbidden: insufficient permissions' });
-      }
-      
-      next();
-    } catch (error) {
-      res.status(500).json({ message: 'Server error during authorization' });
-    }
-  };
-}
-
-// Check if user is event organizer middleware
-export function isEventOrganizer(req: Request, res: Response, next: NextFunction) {
-  const userId = req.userId;
-  const eventId = parseInt(req.params.id);
-  
-  if (!userId) {
-    return res.status(401).json({ message: 'Unauthorized' });
-  }
-  
-  storage.getEvent(eventId)
-    .then(event => {
-      if (!event) {
-        return res.status(404).json({ message: 'Event not found' });
-      }
-      
-      if (event.organizerId !== userId) {
-        return res.status(403).json({ message: 'Access forbidden: you are not the organizer of this event' });
-      }
-      
-      next();
-    })
-    .catch(error => {
-      res.status(500).json({ message: 'Server error checking event organizer' });
-    });
-}
-
-// Type extension for Express Request
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
-      userId?: number;
+      user?: User;
     }
   }
+}
+
+function secret(): string {
+  const value = config().jwtSecret;
+  if (!value) {
+    console.error("[auth] JWT_SECRET is not configured");
+    throw new HttpError(503, "SERVICE_UNAVAILABLE", "The service is not configured yet. Please try again later.");
+  }
+  return value;
+}
+
+export const hashPassword = (password: string) => bcrypt.hash(password, BCRYPT_ROUNDS);
+export const verifyPassword = (password: string, hash: string) => bcrypt.compare(password, hash);
+
+export function toPublicUser(user: User): PublicUser {
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    department: user.department,
+    phone: user.phone,
+    isActive: user.isActive,
+    createdAt: user.createdAt.toISOString(),
+  };
+}
+
+export function issueSession(res: Response, user: User) {
+  const days = config().jwtExpiresInDays;
+  const token = jwt.sign({ v: user.tokenVersion }, secret(), {
+    subject: String(user.id),
+    expiresIn: `${days}d`,
+    algorithm: "HS256",
+  });
+  res.cookie(SESSION_COOKIE, token, {
+    httpOnly: true,
+    secure: config().isProduction,
+    sameSite: "lax",
+    path: "/",
+    maxAge: days * 24 * 60 * 60 * 1000,
+  });
+}
+
+export function clearSession(res: Response) {
+  res.clearCookie(SESSION_COOKIE, { httpOnly: true, secure: config().isProduction, sameSite: "lax", path: "/" });
+}
+
+/** Resolves the signed-in user from the session cookie, or null when absent/invalid/revoked. */
+async function resolveUser(req: Request): Promise<User | null> {
+  const token: string | undefined = req.cookies?.[SESSION_COOKIE];
+  if (!token) return null;
+
+  let payload: jwt.JwtPayload;
+  try {
+    payload = jwt.verify(token, secret(), { algorithms: ["HS256"] }) as jwt.JwtPayload;
+  } catch {
+    return null;
+  }
+
+  const id = Number(payload.sub);
+  if (!Number.isInteger(id)) return null;
+
+  const [user] = await getDb().select().from(users).where(eq(users.id, id)).limit(1);
+  if (!user || !user.isActive || user.tokenVersion !== payload.v) return null;
+  return user;
+}
+
+/** Attaches req.user when a valid session exists; never rejects the request. */
+export async function optionalAuth(req: Request, res: Response, next: NextFunction) {
+  try {
+    const user = await resolveUser(req);
+    if (user) req.user = user;
+    else if (req.cookies?.[SESSION_COOKIE]) clearSession(res);
+    next();
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function requireAuth(req: Request, res: Response, next: NextFunction) {
+  try {
+    const user = await resolveUser(req);
+    if (!user) {
+      if (req.cookies?.[SESSION_COOKIE]) {
+        clearSession(res);
+        throw new HttpError(401, "SESSION_EXPIRED", "Your session has expired. Please sign in again.");
+      }
+      throw unauthorized();
+    }
+    req.user = user;
+    next();
+  } catch (err) {
+    next(err);
+  }
+}
+
+export const requireRole =
+  (...roles: UserRole[]) =>
+  (req: Request, _res: Response, next: NextFunction) => {
+    if (!req.user) return next(unauthorized());
+    if (!roles.includes(req.user.role)) return next(forbidden());
+    next();
+  };
+
+/** The authenticated user; only valid after requireAuth. */
+export function currentUser(req: Request): User {
+  if (!req.user) throw unauthorized();
+  return req.user;
 }
