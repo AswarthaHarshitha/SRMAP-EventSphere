@@ -32,14 +32,14 @@ Public sign-up always creates a **student** account. Organizer and admin access 
 - **Backend:** Node.js, Express, TypeScript, Drizzle ORM, node-postgres, JSON Web Tokens in httpOnly cookies, bcrypt, Helmet, express-rate-limit, Razorpay SDK, Nodemailer
 - **Database:** PostgreSQL (a managed Postgres such as Neon in production; Docker Postgres locally)
 - **Testing and quality:** Vitest and Supertest against an in-process Postgres (PGlite), ESLint, strict TypeScript
-- **Hosting:** Vercel (static frontend on the CDN, Express API as a serverless function in the Mumbai region)
+- **Hosting:** Vercel (static frontend on the CDN, Express API as a serverless function in the Singapore region)
 
 ## Architecture
 
 ```
 Browser ──► Vercel CDN ──► static React app (dist/public)
    │
-   └── /api/* ──► Vercel serverless function (Express app, bom1) ──► PostgreSQL
+   └── /api/* ──► Vercel serverless function (Express app, sin1) ──► PostgreSQL
                                    │
                                    ├──► Razorpay (orders; signed webhooks back in)
                                    └──► SMTP (optional confirmations)
@@ -115,7 +115,7 @@ All configuration comes from environment variables; `.env.example` lists every o
 The app needs a PostgreSQL 14+ database reachable from the API; there is no in-memory fallback.
 
 - **Local:** `docker compose up -d db` starts Postgres 16 on port 5434 with the credentials in `.env.example`.
-- **Production:** any managed Postgres works. Neon's free tier is a good fit for serverless hosting; use its **pooled** connection string with `sslmode=require`.
+- **Production:** any managed Postgres works. The live deployment uses Neon (free tier, Singapore); use its **pooled** connection string with `sslmode=require`.
 - **Schema changes:** edit `shared/schema.ts`, run `npm run db:generate` to create a migration in `migrations/`, commit it, and apply it with `npm run db:migrate` (reads `DATABASE_URL`).
 
 ## API
@@ -156,7 +156,7 @@ All endpoints are under `/api`. Successful responses are `{ "data": ... }` (list
 The production deployment runs on Vercel:
 
 - **Build:** `npm run build:vercel` (configured in `vercel.json`) builds the client with Vite and packages the API into `.vercel/output`.
-- **Runtime:** static assets on Vercel's CDN; `/api/*` in a Node.js 22 serverless function in `bom1` (Mumbai).
+- **Runtime:** static assets on Vercel's CDN; `/api/*` in a Node.js 22 serverless function in `sin1` (Singapore), co-located with the Neon database.
 - **Environment:** set `DATABASE_URL`, `JWT_SECRET` and `APP_URL` in the Vercel project (plus the Razorpay and SMTP variables if used), then run `npm run db:migrate` once against the production database.
 - **Health check:** `GET /api/health` returns `200 {"status":"ok","database":"up"}` when healthy and `503` otherwise.
 

@@ -41,8 +41,8 @@ await writeFile(
       shouldAddHelpers: false,
       supportsResponseStreaming: true,
       maxDuration: 30,
-      // Mumbai region: closest to the university and to the database.
-      regions: [process.env.VERCEL_FUNCTION_REGION || "bom1"],
+      // Singapore: same region as the Neon database, and the nearest Neon region to the university.
+      regions: [process.env.VERCEL_FUNCTION_REGION || "sin1"],
     },
     null,
     2,
